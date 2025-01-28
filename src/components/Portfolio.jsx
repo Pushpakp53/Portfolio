@@ -1,120 +1,176 @@
 // Portfolio.jsx
 import React from 'react';
-import styles from './Portfolio.module.css';
+import {
+    AppBar,
+    Toolbar,
+    Typography,
+    Container,
+    Card,
+    CardContent,
+    CardHeader,
+    Chip,
+    Grid,
+    Link,
+    List,
+    ListItem,
+    ListItemText,
+    Box,
+    useMediaQuery,
+    ThemeProvider,
+    createTheme
+} from '@mui/material';
+import { Email, Phone, LinkedIn } from '@mui/icons-material';
 
-const data = {
-    personal: {
-        name: "Pushpak Patil",
-        email: "pushpakp53@gmail.com",
-        phone: "(+91) 9545002870",
-        linkedin: "linkedin.com/in/pushpak-patil-654219164/"
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#2d3436',
     },
-    summary: "Experienced Software Engineer with background in build and release engineering, web development and technology. Skilled in C++, Python, ReactJS, and Ansible with a proven track record of developing tools and automating processes to enhance efficiency.",
-    experience: [
-        {
-            company: "Adobe",
-            role: "Member of Technical Staff",
-            duration: "Aug 2022 - Present",
-            points: [
-                "Developed internal build status dashboard using React/Material UI/Next.js/MongoDB (30% time reduction)",
-                "Automated build environment setup with Ansible (95% manual task elimination)",
-                "Redesigned web applications using React and Adobe React Spectrum"
-            ]
+        secondary: {
+            main: '#0984e3',
         },
-        // Add other experiences similarly
-    ],
-    projects: [
-        {
-            title: "Typescript Model Project",
-            description: "CLI application fetching GitHub user details",
-            tech: ["TypeScript", "Node.js"],
-            link: "https://github.com/Pushpakp53/TypescriptModelProject"
-        },
-        // Add other projects
-    ],
-    skills: {
-        languages: ["C++", "Python", "Java", "TypeScript"],
-        web: ["React", "Next.js", "MERN Stack"],
-        tools: ["Ansible", "Docker", "Git"],
-        blockchain: ["Ethereum", "Smart Contracts", "Web3.js"]
     },
-    education: "B.Tech in Computer Science - National Institute Of Technology Raipur"
-};
+    typography: {
+        fontFamily: 'Segoe UI, Roboto, Arial, sans-serif',
+    },
+});
+
+const data = { /* Keep the same data structure as before */ };
 
 export default function Portfolio() {
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
     return (
-        <div className={styles.container}>
-            {/* Header Section */}
-            <header className={styles.header}>
-                <h1>{data.personal.name}</h1>
-                <div className={styles.contact}>
-                    <span>{data.personal.email}</span>
-                    <span>{data.personal.phone}</span>
-                    <a href={`https://${data.personal.linkedin}`} target="_blank" rel="noopener noreferrer">
-                        LinkedIn
-                    </a>
-                </div>
-            </header>
+      <ThemeProvider theme={theme}>
+          <AppBar position="static" color="primary">
+              <Toolbar>
+                  <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
+                      {data.personal.name}
+                  </Typography>
+                  <Box sx={{ display: 'flex', gap: 2 }}>
+                      <Link href={`mailto:${data.personal.email}`} color="inherit">
+                          <Email sx={{ verticalAlign: 'middle', mr: 0.5 }} />
+                          {!isMobile && data.personal.email}
+                      </Link>
+                      <Link href={`tel:${data.personal.phone}`} color="inherit">
+                          <Phone sx={{ verticalAlign: 'middle', mr: 0.5 }} />
+                          {!isMobile && data.personal.phone}
+                      </Link>
+                      <Link
+                          href={`https://${data.personal.linkedin}`}
+                          target="_blank"
+                          rel="noopener"
+                          color="inherit"
+                      >
+                          <LinkedIn sx={{ verticalAlign: 'middle', mr: 0.5 }} />
+                          {!isMobile && 'LinkedIn'}
+                      </Link>
+                  </Box>
+              </Toolbar>
+          </AppBar>
 
-            {/* Summary Section */}
-            <section className={styles.section}>
-                <h2>Summary</h2>
-                <p>{data.summary}</p>
-            </section>
+          <Container maxWidth="lg" sx={{ py: 4 }}>
+              {/* Summary Section */}
+              <Card sx={{ mb: 4 }}>
+                  <CardContent>
+                      <Typography variant="h5" gutterBottom color="primary">
+                          Professional Summary
+                      </Typography>
+                      <Typography variant="body1">
+                          {data.summary}
+                      </Typography>
+                  </CardContent>
+              </Card>
 
-            {/* Experience Section */}
-            <section className={styles.section}>
-                <h2>Professional Experience</h2>
-                {data.experience.map((exp, i) => (
-                    <div key={i} className={styles.experience}>
-                        <h3>{exp.role} @ {exp.company}</h3>
-                        <div className={styles.duration}>{exp.duration}</div>
-                        <ul>
-                            {exp.points.map((point, j) => (
-                                <li key={j}>{point}</li>
-                            ))}
-                        </ul>
-                    </div>
+              {/* Experience Section */}
+              <Typography variant="h4" gutterBottom sx={{ mb: 3 }}>
+                  Experience
+              </Typography>
+              {data.experience.map((exp, i) => (
+            <Card key={i} sx={{ mb: 3 }}>
+                <CardHeader
+                    title={<Typography variant="h6">{exp.role}</Typography>}
+                    subheader={
+                        <>
+                            <Typography variant="subtitle1">{exp.company}</Typography>
+                            <Typography variant="caption">{exp.duration}</Typography>
+                        </>
+                    }
+                />
+                <CardContent>
+                    <List dense>
+                        {exp.points.map((point, j) => (
+                    <ListItem key={j}>
+                        <ListItemText
+                            primary={point}
+                            primaryTypographyProps={{ variant: 'body2' }}
+                        />
+                    </ListItem>
                 ))}
-            </section>
+                    </List>
+                </CardContent>
+            </Card>
+        ))}
 
-            {/* Projects Section */}
-            <section className={styles.section}>
-                <h2>Key Projects</h2>
-                <div className={styles.projects}>
-                    {data.projects.map((project, i) => (
-                        <div key={i} className={styles.projectCard}>
-                            <h3>{project.title}</h3>
-                            <p>{project.description}</p>
-                            <div className={styles.techStack}>
-                                {project.tech.map((t, j) => (
-                                    <span key={j} className={styles.techPill}>{t}</span>
-                                ))}
-                            </div>
-                            <a href={project.link} target="_blank" rel="noopener noreferrer">
-                                View on GitHub
-                            </a>
-                        </div>
+              {/* Projects Section */}
+              <Typography variant="h4" gutterBottom sx={{ mb: 3 }}>
+                  Projects
+              </Typography>
+              <Grid container spacing={3}>
+                  {data.projects.map((project, i) => (
+              <Grid item xs={12} sm={6} md={4} key={i}>
+                  <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                      <CardContent sx={{ flexGrow: 1 }}>
+                          <Typography variant="h6" gutterBottom>
+                              {project.title}
+                          </Typography>
+                          <Typography variant="body2" sx={{ mb: 2 }}>
+                              {project.description}
+                          </Typography>
+                          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                              {project.tech.map((t, j) => (
+                        <Chip key={j} label={t} size="small" color="secondary" />
                     ))}
-                </div>
-            </section>
+                          </Box>
+                      </CardContent>
+                      <Box sx={{ p: 2 }}>
+                          <Link
+                              href={project.link}
+                              target="_blank"
+                              rel="noopener"
+                              variant="button"
+                          >
+                              View on GitHub
+                          </Link>
+                      </Box>
+                  </Card>
+              </Grid>
+          ))}
+              </Grid>
 
-            {/* Skills Section */}
-            <section className={styles.section}>
-                <h2>Technical Skills</h2>
-                <div className={styles.skillsGrid}>
-                    {Object.entries(data.skills).map(([category, items]) => (
-                        <div key={category} className={styles.skillCategory}>
-                            <h3>{category.charAt(0).toUpperCase() + category.slice(1)}</h3>
-                            <div className={styles.skillItems}>
-                                {items.map((item, i) => (
-                                    <span key={i} className={styles.skillPill}>{item}</span>
-                                ))}
-                            </div>
-                        </div>
+              {/* Skills Section */}
+              <Typography variant="h4" gutterBottom sx={{ mt: 4, mb: 3 }}>
+                  Technical Skills
+              </Typography>
+              <Grid container spacing={3}>
+                  {Object.entries(data.skills).map(([category, items]) => (
+              <Grid item xs={12} sm={6} md={3} key={category}>
+                  <Card>
+                      <CardContent>
+                          <Typography variant="subtitle1" gutterBottom>
+                              {category.charAt(0).toUpperCase() + category.slice(1)}
+                          </Typography>
+                          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                              {items.map((item, i) => (
+                        <Chip key={i} label={item} size="small" sx={{ mb: 0.5 }} />
                     ))}
-                </div>
-            </section>
-        </div>
-    );
+                          </Box>
+                      </CardContent>
+                  </Card>
+              </Grid>
+          ))}
+              </Grid>
+          </Container>
+      </ThemeProvider>
+  );
 }
