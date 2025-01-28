@@ -35,7 +35,43 @@ const theme = createTheme({
     },
 });
 
-const data = { /* Keep the same data structure as before */ };
+const data = {
+    personal: {
+        name: "Pushpak Patil",
+        email: "pushpakp53@gmail.com",
+        phone: "(+91) 9545002870",
+        linkedin: "linkedin.com/in/pushpak-patil-654219164/"
+    },
+    summary: "Experienced Software Engineer...", // Your summary text
+    experience: [
+        {
+            company: "Adobe",
+            role: "Member of Technical Staff",
+            duration: "Aug 2022 - Present",
+            points: [
+                "Developed internal build status dashboard...",
+                // Other points
+            ]
+        },
+        // Other experiences
+    ],
+    projects: [
+        {
+            title: "Typescript Model Project",
+            description: "CLI application...",
+            tech: ["TypeScript", "Node.js"],
+            link: "https://github.com/..."
+        },
+        // Other projects
+    ],
+    skills: {
+        languages: ["C++", "Python", "Java"],
+        web: ["React", "Next.js"],
+        tools: ["Ansible", "Git"],
+        blockchain: ["Ethereum", "Smart Contracts"]
+    },
+    education: "B.Tech in Computer Science..."
+};
 
 export default function Portfolio() {
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
